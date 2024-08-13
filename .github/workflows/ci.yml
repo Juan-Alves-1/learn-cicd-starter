@@ -21,8 +21,14 @@ jobs:
       - name: Unit tests for GetAPIKey
         run:  go test ./... -v -cover
 
+      - name: Install gosec
+        run: go install github.com/securego/gosec/v2/cmd/gosec@latest
+
+      - name: Check out security
+        run: gosec ./...
+
   style:
-    name: formatting
+    name: Style
     runs-on: ubuntu-latest
 
     steps:
@@ -36,4 +42,10 @@ jobs:
       
       - name: Formatting check
         run: test -z $(go fmt ./...)
+
+      - name: Install staticcheck
+        run: go install honnef.co/go/tools/cmd/staticcheck@latest
+      
+      - name: Linting check
+        run: staticcheck ./... 
 
